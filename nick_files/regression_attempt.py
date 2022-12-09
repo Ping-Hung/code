@@ -1,6 +1,5 @@
 from MiniProjectPath1 import dataset_1
 import numpy as np
-import datetime
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 
@@ -22,8 +21,12 @@ def split_data(X, y):
 
 
 def regression(X, y):
+<<<<<<< HEAD
     norm_X, norm_y = normalize(X), normalize(y)
     return LinearRegression(fit_intercept = True).fit(X,y)
+=======
+    return LinearRegression().fit(X,y)
+>>>>>>> 20a9e47fdd0c94ee7708eaf591a22dbd6f308d46
 
 def normalize(vector):
     # vector is a list, shall return normalized vector
