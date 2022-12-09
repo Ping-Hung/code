@@ -23,28 +23,44 @@ def split_data(X, y):
 
 def regression(X, y):
     norm_X, norm_y = normalize(X), normalize(y)
-    return LinearRegression().fit(X,y)
+    return LinearRegression(fit_intercept = True).fit(X,y)
 
 def normalize(vector):
     # vector is a list, shall return normalized vector
     return (vector - np.mean(vector, axis = 0)) / np.std(vector, axis = 0)
 
-
-if __name__ == '__main__':
-    # print(normalize(input_X_matrix()))
+def main():
     X = input_X_matrix()
     y = output_y_matrix()
-    x_train, x_test, y_train, y_test = split_data(X,y)
 
-    linear_model = regression(normalize(x_train), normalize(y_train))
-    r_square = linear_model.score(normalize(x_test), normalize(y_test))
 
+    """selecting best model"""
+    r_square_model_list = []
+
+    for idx in range(5):
+        x_train, x_test, y_train, y_test = split_data(X,y)
+        linear_model = regression(normalize(x_train), normalize(y_train))
+        r_square = linear_model.score(normalize(x_test), normalize(y_test))
+        r_square_model_list.append(r_square, linear_model)
+
+        best_r_square = 0
+        for items in r_square_model_list:
+            
+        best_model = r_square_model_list
+
+
+    """this part is just for printing out results"""
     print('equation:')
-    for num, x in zip(linear_model.coef_, ['Brooklyn', 'Manhattan', 'Williamsburg', 'Queensboro']):
+    for num, x in zip(best_model.coef_, ['Brooklyn', 'Manhattan', 'Williamsburg', 'Queensboro']):
         print(str(num) + x, end = '')
         if x != 'Queensboro':
             print(' + ', end = '')
-    print(' + ' + str(linear_model.intercept_))
+    print(' + ' + str(best_model.intercept_))
 
-    print(f"\nintercept of the model is {linear_model.intercept_}")
-    print(f"r^2 value = {r_square}")
+    print(f"\nintercept of the model is {best_model.intercept_}")
+    print(f"r^2 value = {best_r_square}")
+
+
+if __name__ == '__main__':
+    # print(normalize(input_X_matrix()))
+    main()
