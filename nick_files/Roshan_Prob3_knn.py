@@ -1,8 +1,10 @@
-from MiniProjectPath1 import dataset_1
 import numpy as np
-from sklearn.linear_model import LinearRegression
-from sklearn.model_selection import train_test_split
 
+from MiniProjectPath1 import dataset_1
+
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.model_selection import train_test_split
+from sklearn import metrics
 
 def input_X_matrix():
     """returns a 5 column matrix such that data for each bridge is recorded in a single colmn vector"""
@@ -19,14 +21,12 @@ def split_data(X, y):
     x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state= None)
     return x_train, x_test, y_train, y_test
 
-
-def regression(X, y):
-    return LinearRegression().fit(X,y)
+def knn(X, y, k):
+    return KNeighborsClassifier(n_neighbors=k).fit(X,y)
 
 def normalize(vector):
     # vector is a list, shall return normalized vector
     return (vector - np.mean(vector, axis = 0)) / np.std(vector, axis = 0)
-
 
 if __name__ == '__main__':
     # print(normalize(input_X_matrix()))
@@ -34,15 +34,12 @@ if __name__ == '__main__':
     y = output_y_matrix()
     x_train, x_test, y_train, y_test = split_data(X,y)
 
-    linear_model = regression(normalize(x_train), normalize(y_train))
-    r_square = linear_model.score(normalize(x_test), normalize(y_test))
+    k = 4
+    knn_model = knn(x_train, y_train, k)
 
-    print('equation:')
-    for num, x in zip(linear_model.coef_, ['Brooklyn', 'Manhattan', 'Williamsburg', 'Queensboro']):
-        print(str(num) + x, end = '')
-        if x != 'Queensboro':
-            print(' + ', end = '')
-    print(' + ' + str(linear_model.intercept_))
+    response = knn_model.predict(x_test)
 
-    print(f"\nintercept of the model is {linear_model.intercept_}")
-    print(f"r^2 value = {r_square}")
+    acc = metrics.accuracy_score(y_test, response)
+    print(acc)
+
+    print(response)
