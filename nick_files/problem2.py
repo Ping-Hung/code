@@ -3,15 +3,18 @@ import numpy as np
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 
-
 def input_X_matrix():
-    """returns a 5 column matrix such that data for each bridge is recorded in each column vector"""
-    Brooklyn, Manhattan = list(dataset_1['Brooklyn Bridge']), list(dataset_1['Manhattan Bridge'])
-    Williamsburg, Queensboro = list(dataset_1['Williamsburg Bridge']), list(dataset_1['Queensboro Bridge'])
-    return np.array([Brooklyn, Manhattan, Williamsburg, Queensboro]).transpose()
+    """output a 3 column matrix containing high temp, low temp, and precipitation as colnmn vectors"""
+    return np.array(
+            [
+             list(dataset_1['High Temp']),
+             list(dataset_1['Low Temp']),
+             list(dataset_1['Precipitation'])
+             ]
+                    ).transpose()
 
 def output_y_matrix():
-    """returns a single column vector containing entries of total bikers in NYC each day"""
+    """output the total number of bikers in NYC in a single column vector"""
     return np.array(list(dataset_1['Total'])).transpose()
 
 def split_data(X, y):
@@ -54,20 +57,16 @@ def main():
             best_score = score
             best_model = model
 
-    """printing out resulting equation and r^2 value"""
+    """printing out resulting equation"""
     print('equation:')
-    for num, x in zip(best_model.coef_, ['Brooklyn', 'Manhattan', 'Williamsburg', 'Queensboro']):
+    for num, x in zip(best_model.coef_, ['High Temp', 'Low Temp', 'Precipitation']):
         print(str(num) + x, end = '')
-        if x != 'Queensboro':
+        if x != 'Precipitation':
             print(' + ', end = '')
     print(' + ' + str(best_model.intercept_))
 
     print(f"\nintercept of the model is {best_model.intercept_}")
     print(f"r^2 value = {best_score}")
-
-
-
-
 
 if __name__ == '__main__':
     main()
