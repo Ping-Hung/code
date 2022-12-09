@@ -22,7 +22,7 @@ def split_data(X, y):
 
 def regression(X, y):
     norm_X, norm_y = normalize(X), normalize(y)
-    return LinearRegression(fit_intercept = True).fit(X,y)
+    return LinearRegression().fit(X,y)
 
 def normalize(vector):
     # vector is a list, shall return normalized vector
@@ -32,33 +32,23 @@ def main():
     X = input_X_matrix()
     y = output_y_matrix()
 
+    """5 fold (80-20) cv"""
+    models_and_scores = []
 
-    """five fold CV"""
-    # model_and_score = []
-    #
-    # for idx in range(5):
-    #     x_train, x_test, y_train, y_test = split_data(X,y)
-    #     model = regression(normalize(x_train), normalize(y_train))
-    #     r_square = model.score(x_test, y_test)
-    #     model_and_score.append((model, r_square))
-    #
-    # for model, score in model_and_score:
-    #     print(type(model), end = '\t')
-    #     print(score)
+    for k in range(5):
+        x_train, x_test, y_train, y_test = split_data(X,y)
+        model = regression(normalize(x_train), normalize(y_train))
+        r_square = model.score(normalize(x_test),normalize(y_test))
+        models_and_scores.append((model, r_square))
 
-    """selecting the best model and score"""
+    """selecting best model"""
+    best_model = None
+    best_score = 0
 
-    # best_score = 0
-    # best_model = None
-    #
-    # for model, score in model_and_score:
-    #     if score > best_score:
-    #         best_score = score
-    #         best_model = model
-
-    x_train, x_test, y_train, y_test = split_data(X,y)
-    best_model = regression(normalize(x_train), normalize(y_train))
-    best_r_square = best_model.score(x_test, y_test)
+    for model, score in models_and_scores:
+        if score > best_score:
+            best_score = score
+            best_model = model
 
     """this part is just for printing out results"""
     print('equation:')
@@ -69,7 +59,10 @@ def main():
     print(' + ' + str(best_model.intercept_))
 
     print(f"\nintercept of the model is {best_model.intercept_}")
-    print(f"r^2 value = {best_r_square}")
+    print(f"r^2 value = {best_score}")
+
+
+
 
 
 if __name__ == '__main__':
