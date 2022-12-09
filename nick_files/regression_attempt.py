@@ -21,7 +21,8 @@ def split_data(X, y):
 
 
 def regression(X, y):
-    return LinearRegression().fit(X,y)
+    norm_X, norm_y = normalize(X), normalize(y)
+    return LinearRegression(fit_intercept = True).fit(X,y)
 
 def normalize(vector):
     # vector is a list, shall return normalized vector
@@ -32,20 +33,32 @@ def main():
     y = output_y_matrix()
 
 
-    """selecting best model"""
-    r_square_model_list = []
+    """five fold CV"""
+    # model_and_score = []
+    #
+    # for idx in range(5):
+    #     x_train, x_test, y_train, y_test = split_data(X,y)
+    #     model = regression(normalize(x_train), normalize(y_train))
+    #     r_square = model.score(x_test, y_test)
+    #     model_and_score.append((model, r_square))
+    #
+    # for model, score in model_and_score:
+    #     print(type(model), end = '\t')
+    #     print(score)
 
-    for idx in range(5):
-        x_train, x_test, y_train, y_test = split_data(X,y)
-        linear_model = regression(normalize(x_train), normalize(y_train))
-        r_square = linear_model.score(normalize(x_test), normalize(y_test))
-        r_square_model_list.append(r_square, linear_model)
+    """selecting the best model and score"""
 
-        best_r_square = 0
-        for items in r_square_model_list:
-            
-        best_model = r_square_model_list
+    # best_score = 0
+    # best_model = None
+    #
+    # for model, score in model_and_score:
+    #     if score > best_score:
+    #         best_score = score
+    #         best_model = model
 
+    x_train, x_test, y_train, y_test = split_data(X,y)
+    best_model = regression(normalize(x_train), normalize(y_train))
+    best_r_square = best_model.score(x_test, y_test)
 
     """this part is just for printing out results"""
     print('equation:')
