@@ -40,10 +40,11 @@ if __name__ == '__main__':
     r_square = linear_model.score(normalize(x_test), normalize(y_test))
 
     print('equation:')
-    for num, x in zip(linear_model.coef_, ['x1', 'x2', 'x3', 'x4']):
+    for num, x in zip(linear_model.coef_, ['Brooklyn', 'Manhattan', 'Williamsburg', 'Queensboro']):
         print(str(num) + x, end = '')
-        if x != 'x4':
+        if x != 'Queensboro':
             print(' + ', end = '')
     print(' + ' + str(linear_model.intercept_))
+
     print(f"\nintercept of the model is {linear_model.intercept_}")
     print(f"r^2 value = {r_square}")
