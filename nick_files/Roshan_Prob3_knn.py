@@ -8,12 +8,18 @@ from sklearn import metrics
 
 def input_X_matrix():
     """returns a 5 column matrix such that data for each bridge is recorded in a single colmn vector"""
+    """
     Brooklyn, Manhattan = list(dataset_1['Brooklyn Bridge']), list(dataset_1['Manhattan Bridge'])
     Williamsburg, Queensboro = list(dataset_1['Williamsburg Bridge']), list(dataset_1['Queensboro Bridge'])
     return np.array([Brooklyn, Manhattan, Williamsburg, Queensboro]).transpose()
+    """
+    return np.array(list(dataset_1['Total'])).transpose().reshape(-1, 1)
 
 def output_y_matrix():
-    return np.array(list(dataset_1['Total'])).transpose()
+    daydict = {'Monday': 0, 'Tuesday': 1, 'Wednesday': 2, 'Thursday': 3, 'Friday': 4, 'Saturday': 5, 'Sunday': 6}
+    days = list(dataset_1['Day'])
+    days = [daydict[day] for day in days]
+    return np.array(days).transpose()
 
 def split_data(X, y):
     """shall return 4 lists of data: x_train, x_test; y_train, y_test"""
@@ -42,4 +48,5 @@ if __name__ == '__main__':
     acc = metrics.accuracy_score(y_test, response)
     print(acc)
 
+    print(y_test)
     print(response)
